@@ -1,13 +1,13 @@
-import { PrismaClient } from '@prisma/client';
 import fastify from 'fastify';
 
+import { register } from './http/controllers/register';
+import { prisma } from './lib/prisma';
+
 const app = fastify();
-const prisma = new PrismaClient();
 
-app.get('/', async () => {
-	const users = await prisma.user.findMany();
-
-	return users;
+app.get('/users', async () => {
+	return await prisma.user.findMany();
 });
+app.post('/users', register);
 
 export { app };
